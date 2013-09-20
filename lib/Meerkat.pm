@@ -4,14 +4,16 @@ use warnings;
 
 package Meerkat;
 # ABSTRACT: Manage MongoDB documents as Moose objects
-our $VERSION = '0.001'; # VERSION
+our $VERSION = '0.002'; # VERSION
 
 # Dependencies
 use Moose 2;
 use MooseX::AttributeShortcuts;
 
 use Meerkat::Collection;
+use Module::Runtime qw/require_module compose_module_name/;
 use MongoDB;
+use Try::Tiny;
 use Type::Params qw/compile/;
 use Types::Standard qw/:types/;
 
@@ -22,7 +24,7 @@ use namespace::autoclean;
 #--------------------------------------------------------------------------#
 
 
-has namespace => (
+has model_namespace => (
     is       => 'ro',
     isa      => 'Str',
     required => 1,
@@ -40,6 +42,12 @@ has client_options => (
     is      => 'ro',
     isa     => 'HashRef', # hashlike?
     default => sub { {} },
+);
+
+
+has collection_namespace => (
+    is  => 'ro',
+    isa => 'Str',
 );
 
 # set db_name for authentication if not set
@@ -100,6 +108,12 @@ sub _build__collection_cache {
     return {};
 }
 
+has _collection_class_cache => (
+    is      => 'ro',
+    isa     => 'HashRef',
+    default => sub { {} },
+);
+
 #--------------------------------------------------------------------------#
 # Methods
 #--------------------------------------------------------------------------#
@@ -108,8 +122,9 @@ sub _build__collection_cache {
 sub collection {
     state $check = compile( Object, Str );
     my ( $self, $suffix ) = $check->(@_);
-    my $class = $self->namespace . "::" . $suffix;
-    return Meerkat::Collection->new( class => $class, meerkat => $self );
+    my $class = compose_module_name( $self->model_namespace, $suffix );
+    my $collection = $self->_find_collection_class($suffix);
+    return $collection->new( class => $class, meerkat => $self );
 }
 
 #--------------------------------------------------------------------------#
@@ -141,6 +156,23 @@ sub _check_pid {
     return;
 }
 
+sub _find_collection_class {
+    my ( $self, $suffix ) = @_;
+    my $prefix = $self->collection_namespace;
+
+    if ( !$prefix ) {
+        return "Meerkat::Collection";
+    }
+    elsif ( my $cache = $self->_collection_class_cache->{$suffix} ) {
+        return $cache;
+    }
+    else {
+        my $class = compose_module_name( $prefix, $suffix );
+        try { require_module($class) } catch { $class = "Meerkat::Collection" };
+        return $self->_collection_class_cache->{$suffix} = $class;
+    }
+}
+
 __PACKAGE__->meta->make_immutable;
 
 1;
@@ -160,23 +192,23 @@ Meerkat - Manage MongoDB documents as Moose objects
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 SYNOPSIS
 
     use Meerkat;
 
     my $meerkat = Meerkat->new(
-        namespace      => "MyModel",
-        database_name  => "test",
-        client_options => {
+        model_namespace => "My::Model",
+        database_name   => "test",
+        client_options  => {
             host => "mongodb://example.net:27017",
             username => "willywonka",
             password => "ilovechocolate",
         },
     );
 
-    my $person = $meerkat->collection("Person"); # MyModel::Person
+    my $person = $meerkat->collection("Person"); # My::Model::Person
 
     # create an object and insert it into the MongoDB collection
     my $obj = $person->create( name => 'John' );
@@ -273,12 +305,12 @@ See L<Meerkat::Tutorial> and L<Meerkat::Cookbook> for more.
 
 =head1 ATTRIBUTES
 
-=head2 namespace (required)
+=head2 model_namespace (required)
 
 A perl module namespace that will be prepended to class names requested
-via the L</collection> method.  If C<namespace> is "Foo::Bar", then
+via the L</collection> method.  If C<model_namespace> is "My::Model", then
 C<< $meerkat->collection("Baz") >> will load and associate the
-C<Foo::Bar::Baz> class in the returned collection object.
+C<My::Model::Baz> class in the returned collection object.
 
 =head2 database_name (required)
 
@@ -296,30 +328,42 @@ Note: The C<dt_type> will be forced to C<undef> so that the MongoDB client will
 provide time values as epoch seconds.  See the L<Meerkat::Cookbook> for more on
 dealing with dates and times.
 
+=head2 collection_namespace
+
+A perl module namespace that will be be used to search for custom collection
+classes.  The C<collection_namespace> will be prepended to class names
+requested via the L</collection> method.  If C<collection_namespace> is
+"My::Collection", then C<< $meerkat->collection("Baz") >> will load and use
+C<My::Collection::Baz> for constructing a collection object.  If
+C<collection_namespace> is not provided or if no class is found under the
+namespace (or if it fails to load), then collection objects will be constructed
+using L<Meerkat::Collection>.
+
 =head1 METHODS
 
 =head2 new
 
     my $meerkat = Meerkat->new(
-        namespace      => "MyModel",
-        database_name  => "test",
-        client_options => {
+        model_namespace => "My::Model",
+        database_name   => "test",
+        client_options  => {
             host => "mongodb://example.net:27017",
             username => "willywonka",
             password => "ilovechocolate",
         },
     );
 
-Generates and returns a new Meerkat object.  The C<namespace> and
+Generates and returns a new Meerkat object.  The C<model_namespace> and
 C<database_name> attributes are required.
 
 =head2 collection
 
-    my $person = $meerkat->collection("Person"); # MyModel::Person
+    my $person = $meerkat->collection("Person"); # My::Model::Person
 
-Returns a L<Meerkat::Collection> factory object.  A single parameter
-is required and is used as the suffix of a class name provided to
-the Meerkat::Collection C<class> attribute.
+Returns a L<Meerkat::Collection> factory object or possibly a subclass if a
+C<collection_namespace> attribute has been provided. A single parameter is
+required and is used as the suffix of a class name provided to the
+Meerkat::Collection C<class> attribute.
 
 =for Pod::Coverage BUILD get_mongo_collection
 
@@ -422,7 +466,7 @@ A document-centric data model
 =back
 
 Because it is less ambitious, Meerkat is smaller and less complex, currently
-about 510 lines of code split across six modules.
+about 540 lines of code split across six modules.
 
 =head1 SEE ALSO
 

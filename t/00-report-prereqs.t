@@ -11,7 +11,7 @@ use List::Util qw/max/;
 
 my @modules = qw(
   Carp
-  Class::Load
+  DDP
   Data::Faker
   DateTime
   DateTime::Tiny
@@ -21,6 +21,7 @@ my @modules = qw(
   IO::Handle
   IPC::Open3
   List::Util
+  Module::Runtime
   MongoDB
   MongoDB::OID
   MooX::Types::MooseLike::Base

@@ -20,10 +20,12 @@ perlcritic.rc
 t/00-compile.t
 t/00-report-prereqs.t
 t/basic.t
+t/custom_collection.t
 t/datetime.t
 t/deep_field.t
 t/exceptions.t
-t/lib/MyModel/Person.pm
+t/lib/My/Collection/Person.pm
+t/lib/My/Model/Person.pm
 t/lib/TestFixtures.pm
 t/test-fork.t
 t/update.t

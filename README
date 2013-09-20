@@ -2,22 +2,22 @@ NAME
     Meerkat - Manage MongoDB documents as Moose objects
 
 VERSION
-    version 0.001
+    version 0.002
 
 SYNOPSIS
         use Meerkat;
 
         my $meerkat = Meerkat->new(
-            namespace      => "MyModel",
-            database_name  => "test",
-            client_options => {
+            model_namespace => "My::Model",
+            database_name   => "test",
+            client_options  => {
                 host => "mongodb://example.net:27017",
                 username => "willywonka",
                 password => "ilovechocolate",
             },
         );
 
-        my $person = $meerkat->collection("Person"); # MyModel::Person
+        my $person = $meerkat->collection("Person"); # My::Model::Person
 
         # create an object and insert it into the MongoDB collection
         my $obj = $person->create( name => 'John' );
@@ -100,11 +100,11 @@ USAGE
     See Meerkat::Tutorial and Meerkat::Cookbook for more.
 
 ATTRIBUTES
-  namespace (required)
+  model_namespace (required)
     A perl module namespace that will be prepended to class names requested
-    via the "collection" method. If "namespace" is "Foo::Bar", then
+    via the "collection" method. If "model_namespace" is "My::Model", then
     "$meerkat->collection("Baz")" will load and associate the
-    "Foo::Bar::Baz" class in the returned collection object.
+    "My::Model::Baz" class in the returned collection object.
 
   database_name (required)
     A MongoDB database name used to store all collections generated via the
@@ -120,26 +120,38 @@ ATTRIBUTES
     will provide time values as epoch seconds. See the Meerkat::Cookbook for
     more on dealing with dates and times.
 
+  collection_namespace
+    A perl module namespace that will be be used to search for custom
+    collection classes. The "collection_namespace" will be prepended to
+    class names requested via the "collection" method. If
+    "collection_namespace" is "My::Collection", then
+    "$meerkat->collection("Baz")" will load and use "My::Collection::Baz"
+    for constructing a collection object. If "collection_namespace" is not
+    provided or if no class is found under the namespace (or if it fails to
+    load), then collection objects will be constructed using
+    Meerkat::Collection.
+
 METHODS
   new
         my $meerkat = Meerkat->new(
-            namespace      => "MyModel",
-            database_name  => "test",
-            client_options => {
+            model_namespace => "My::Model",
+            database_name   => "test",
+            client_options  => {
                 host => "mongodb://example.net:27017",
                 username => "willywonka",
                 password => "ilovechocolate",
             },
         );
 
-    Generates and returns a new Meerkat object. The "namespace" and
+    Generates and returns a new Meerkat object. The "model_namespace" and
     "database_name" attributes are required.
 
   collection
-        my $person = $meerkat->collection("Person"); # MyModel::Person
+        my $person = $meerkat->collection("Person"); # My::Model::Person
 
-    Returns a Meerkat::Collection factory object. A single parameter is
-    required and is used as the suffix of a class name provided to the
+    Returns a Meerkat::Collection factory object or possibly a subclass if a
+    "collection_namespace" attribute has been provided. A single parameter
+    is required and is used as the suffix of a class name provided to the
     Meerkat::Collection "class" attribute.
 
 EXCEPTION HANDLING
@@ -215,7 +227,7 @@ RATIONALE
     *   A document-centric data model
 
     Because it is less ambitious, Meerkat is smaller and less complex,
-    currently about 510 lines of code split across six modules.
+    currently about 540 lines of code split across six modules.
 
 SEE ALSO
   Meerkat documentation

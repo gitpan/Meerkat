@@ -21,8 +21,8 @@ my %WriteMakefileArgs = (
   "NAME" => "Meerkat",
   "PREREQ_PM" => {
     "Carp" => 0,
-    "Class::Load" => 0,
     "DateTime" => 0,
+    "Module::Runtime" => 0,
     "MongoDB" => 0,
     "MongoDB::OID" => 0,
     "Moose" => 2,
@@ -42,6 +42,7 @@ my %WriteMakefileArgs = (
     "warnings" => 0
   },
   "TEST_REQUIRES" => {
+    "DDP" => 0,
     "Data::Faker" => 0,
     "DateTime::Tiny" => 0,
     "ExtUtils::MakeMaker" => 0,
@@ -62,7 +63,7 @@ my %WriteMakefileArgs = (
     "Time::HiRes" => 0,
     "lib" => 0
   },
-  "VERSION" => "0.001",
+  "VERSION" => "0.002",
   "test" => {
     "TESTS" => "t/*.t"
   }

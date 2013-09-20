@@ -4,7 +4,7 @@ use warnings;
 
 package Meerkat::Role::Document;
 # ABSTRACT: Enhances a Moose object with Meerkat methods and metadata
-our $VERSION = '0.001'; # VERSION
+our $VERSION = '0.002'; # VERSION
 
 use Moose::Role 2;
 use MooseX::AttributeShortcuts;
@@ -234,13 +234,13 @@ Meerkat::Role::Document - Enhances a Moose object with Meerkat methods and metad
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 SYNOPSIS
 
 Your model class:
 
-    package MyModel::Person;
+    package My::Model::Person;
 
     use Moose;
 
@@ -271,10 +271,11 @@ In your code:
     use Meerkat;
 
     my $meerkat = Meerkat->new(
-        namespace => "MyModel", database_name => "test"
+        model_namespace => "My::Model",
+        database_name => "test"
     );
 
-    my $person = $meerkat->collection("Person"); # MyModel::Person
+    my $person = $meerkat->collection("Person"); # My::Model::Person
 
     # create a document
     my $obj = $person->create( name => "Larry" );

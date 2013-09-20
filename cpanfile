@@ -1,6 +1,6 @@
 requires "Carp" => "0";
-requires "Class::Load" => "0";
 requires "DateTime" => "0";
+requires "Module::Runtime" => "0";
 requires "MongoDB" => "0";
 requires "MongoDB::OID" => "0";
 requires "Moose" => "2";
@@ -21,6 +21,7 @@ requires "strict" => "0";
 requires "warnings" => "0";
 
 on 'test' => sub {
+  requires "DDP" => "0";
   requires "Data::Faker" => "0";
   requires "DateTime::Tiny" => "0";
   requires "ExtUtils::MakeMaker" => "0";
