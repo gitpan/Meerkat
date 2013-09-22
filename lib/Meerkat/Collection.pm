@@ -4,7 +4,7 @@ use warnings;
 
 package Meerkat::Collection;
 # ABSTRACT: Associate a class, database and MongoDB collection
-our $VERSION = '0.002'; # VERSION
+our $VERSION = '0.003'; # VERSION
 
 use Moose 2;
 use MooseX::AttributeShortcuts;
@@ -201,7 +201,7 @@ sub thaw_object {
 sub _mongo_collection {
     state $check = compile(Object);
     my ($self) = $check->(@_);
-    return $self->meerkat->get_mongo_collection( $self->collection_name );
+    return $self->meerkat->mongo_collection( $self->collection_name );
 }
 
 sub _save {
@@ -254,7 +254,7 @@ Meerkat::Collection - Associate a class, database and MongoDB collection
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 SYNOPSIS
 

@@ -1,5 +1,11 @@
 Revision history for Meerkat
 
+0.003     2013-09-21 23:29:17 America/New_York
+
+    [INTERNAL]
+
+    - Extracted MongoDB object management to MooseX::Role::MongoDB
+
 0.002     2013-09-20 13:02:36 America/New_York
 
     [INCOMPATIBLE CHANGE]

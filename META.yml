@@ -13,7 +13,6 @@ build_requires:
   IPC::Open3: 0
   List::Util: 0
   MooX::Types::MooseLike::Base: 0
-  Parallel::Iterator: 0
   Test::Deep: 0
   Test::FailWarnings: 0
   Test::Fatal: 0
@@ -43,22 +42,22 @@ no_index:
 provides:
   Meerkat:
     file: lib/Meerkat.pm
-    version: 0.002
+    version: 0.003
   Meerkat::Collection:
     file: lib/Meerkat/Collection.pm
-    version: 0.002
+    version: 0.003
   Meerkat::Cursor:
     file: lib/Meerkat/Cursor.pm
-    version: 0.002
+    version: 0.003
   Meerkat::DateTime:
     file: lib/Meerkat/DateTime.pm
-    version: 0.002
+    version: 0.003
   Meerkat::Role::Document:
     file: lib/Meerkat/Role/Document.pm
-    version: 0.002
+    version: 0.003
   Meerkat::Types:
     file: lib/Meerkat/Types.pm
-    version: 0.002
+    version: 0.003
 requires:
   Carp: 0
   DateTime: 0
@@ -68,6 +67,7 @@ requires:
   Moose: 2
   Moose::Role: 2
   MooseX::AttributeShortcuts: 0
+  MooseX::Role::MongoDB: 0
   MooseX::Storage: 0
   MooseX::Storage::Engine: 0
   MooseX::Types: 0
@@ -85,5 +85,5 @@ resources:
   bugtracker: https://github.com/dagolden/Meerkat/issues
   homepage: https://github.com/dagolden/Meerkat
   repository: https://github.com/dagolden/Meerkat.git
-version: 0.002
+version: 0.003
 x_authority: cpan:DAGOLDEN

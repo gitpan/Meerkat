@@ -27,7 +27,6 @@ t/exceptions.t
 t/lib/My/Collection/Person.pm
 t/lib/My/Model/Person.pm
 t/lib/TestFixtures.pm
-t/test-fork.t
 t/update.t
 tidyall.ini
 xt/author/critic.t

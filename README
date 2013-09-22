@@ -2,7 +2,7 @@ NAME
     Meerkat - Manage MongoDB documents as Moose objects
 
 VERSION
-    version 0.002
+    version 0.003
 
 SYNOPSIS
         use Meerkat;
@@ -48,8 +48,8 @@ DESCRIPTION
     Meerkat is not an object-relational mapper. It does not offer or manage
     relations or support embedded objects.
 
-    Meerkat is fork-safe. It manage a cache of MongoDB::Collection objects
-    that gets cleared when a fork occurs. Meerkat will transparently
+    Meerkat is fork-safe. It maintains a cache of MongoDB::Collection
+    objects that gets cleared when a fork occurs. Meerkat will transparently
     reconnect from child processes.
 
 USAGE
@@ -227,7 +227,7 @@ RATIONALE
     *   A document-centric data model
 
     Because it is less ambitious, Meerkat is smaller and less complex,
-    currently about 540 lines of code split across six modules.
+    currently about 480 lines of code split across six modules.
 
 SEE ALSO
   Meerkat documentation

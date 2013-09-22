@@ -28,6 +28,7 @@ my %WriteMakefileArgs = (
     "Moose" => 2,
     "Moose::Role" => 2,
     "MooseX::AttributeShortcuts" => 0,
+    "MooseX::Role::MongoDB" => 0,
     "MooseX::Storage" => 0,
     "MooseX::Storage::Engine" => 0,
     "MooseX::Types" => 0,
@@ -52,7 +53,6 @@ my %WriteMakefileArgs = (
     "IPC::Open3" => 0,
     "List::Util" => 0,
     "MooX::Types::MooseLike::Base" => 0,
-    "Parallel::Iterator" => 0,
     "Test::Deep" => 0,
     "Test::FailWarnings" => 0,
     "Test::Fatal" => 0,
@@ -63,7 +63,7 @@ my %WriteMakefileArgs = (
     "Time::HiRes" => 0,
     "lib" => 0
   },
-  "VERSION" => "0.002",
+  "VERSION" => "0.003",
   "test" => {
     "TESTS" => "t/*.t"
   }

@@ -4,7 +4,7 @@ use warnings;
 
 package Meerkat::Types;
 # ABSTRACT: Moose types for Meerkat
-our $VERSION = '0.002'; # VERSION
+our $VERSION = '0.003'; # VERSION
 
 use MooseX::Types -declare => [qw(MeerkatDateTime)];
 use MooseX::Storage::Engine;
@@ -52,7 +52,7 @@ Meerkat::Types - Moose types for Meerkat
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 SYNOPSIS
 

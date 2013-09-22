@@ -28,10 +28,10 @@ my @modules = qw(
   Moose
   Moose::Role
   MooseX::AttributeShortcuts
+  MooseX::Role::MongoDB
   MooseX::Storage
   MooseX::Storage::Engine
   MooseX::Types
-  Parallel::Iterator
   Scalar::Util
   Syntax::Keyword::Junction
   Test::Deep
