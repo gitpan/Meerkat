@@ -16,6 +16,7 @@ my @modules = qw(
   DateTime
   DateTime::Tiny
   ExtUtils::MakeMaker
+  File::Spec
   File::Spec::Functions
   File::Temp
   IO::Handle

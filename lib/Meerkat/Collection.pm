@@ -4,7 +4,7 @@ use warnings;
 
 package Meerkat::Collection;
 # ABSTRACT: Associate a class, database and MongoDB collection
-our $VERSION = '0.003'; # VERSION
+our $VERSION = '0.004'; # VERSION
 
 use Moose 2;
 use MooseX::AttributeShortcuts;
@@ -91,7 +91,7 @@ sub find_id {
     state $check = compile( Object, Defined );
     my ( $self, $id ) = $check->(@_);
     $id = ref($id) eq 'MongoDB::OID' ? $id : MongoDB::OID->new($id);
-    my $data = $self->_mongo_collection->find_one( { _id => $id } );
+    return unless my $data = $self->_mongo_collection->find_one( { _id => $id } );
     return $self->thaw_object($data);
 }
 
@@ -99,7 +99,7 @@ sub find_id {
 sub find_one {
     state $check = compile( Object, HashRef );
     my ( $self, $query ) = $check->(@_);
-    my $data = $self->_mongo_collection->find_one($query);
+    return unless my $data = $self->_mongo_collection->find_one($query);
     return $self->thaw_object($data);
 }
 
@@ -254,7 +254,7 @@ Meerkat::Collection - Associate a class, database and MongoDB collection
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 SYNOPSIS
 

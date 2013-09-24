@@ -4,7 +4,7 @@
       "David Golden <dagolden@cpan.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 4.300039, CPAN::Meta::Converter version 2.132620",
+   "generated_by" : "Dist::Zilla version 4.300039, CPAN::Meta::Converter version 2.120921",
    "license" : [
       "apache_2_0"
    ],
@@ -27,7 +27,7 @@
    "prereqs" : {
       "configure" : {
          "requires" : {
-            "ExtUtils::MakeMaker" : "6.30"
+            "ExtUtils::MakeMaker" : "6.17"
          }
       },
       "develop" : {
@@ -70,6 +70,7 @@
             "Data::Faker" : "0",
             "DateTime::Tiny" : "0",
             "ExtUtils::MakeMaker" : "0",
+            "File::Spec" : "0",
             "File::Spec::Functions" : "0",
             "File::Temp" : "0",
             "IO::Handle" : "0",
@@ -91,27 +92,27 @@
    "provides" : {
       "Meerkat" : {
          "file" : "lib/Meerkat.pm",
-         "version" : "0.003"
+         "version" : "0.004"
       },
       "Meerkat::Collection" : {
          "file" : "lib/Meerkat/Collection.pm",
-         "version" : "0.003"
+         "version" : "0.004"
       },
       "Meerkat::Cursor" : {
          "file" : "lib/Meerkat/Cursor.pm",
-         "version" : "0.003"
+         "version" : "0.004"
       },
       "Meerkat::DateTime" : {
          "file" : "lib/Meerkat/DateTime.pm",
-         "version" : "0.003"
+         "version" : "0.004"
       },
       "Meerkat::Role::Document" : {
          "file" : "lib/Meerkat/Role/Document.pm",
-         "version" : "0.003"
+         "version" : "0.004"
       },
       "Meerkat::Types" : {
          "file" : "lib/Meerkat/Types.pm",
-         "version" : "0.003"
+         "version" : "0.004"
       }
    },
    "release_status" : "stable",
@@ -126,7 +127,7 @@
          "web" : "https://github.com/dagolden/Meerkat"
       }
    },
-   "version" : "0.003",
+   "version" : "0.004",
    "x_authority" : "cpan:DAGOLDEN"
 }
 

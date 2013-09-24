@@ -7,6 +7,7 @@ build_requires:
   Data::Faker: 0
   DateTime::Tiny: 0
   ExtUtils::MakeMaker: 0
+  File::Spec: 0
   File::Spec::Functions: 0
   File::Temp: 0
   IO::Handle: 0
@@ -23,9 +24,9 @@ build_requires:
   Time::HiRes: 0
   lib: 0
 configure_requires:
-  ExtUtils::MakeMaker: 6.30
+  ExtUtils::MakeMaker: 6.17
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 4.300039, CPAN::Meta::Converter version 2.132620'
+generated_by: 'Dist::Zilla version 4.300039, CPAN::Meta::Converter version 2.120921'
 license: apache
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -42,22 +43,22 @@ no_index:
 provides:
   Meerkat:
     file: lib/Meerkat.pm
-    version: 0.003
+    version: 0.004
   Meerkat::Collection:
     file: lib/Meerkat/Collection.pm
-    version: 0.003
+    version: 0.004
   Meerkat::Cursor:
     file: lib/Meerkat/Cursor.pm
-    version: 0.003
+    version: 0.004
   Meerkat::DateTime:
     file: lib/Meerkat/DateTime.pm
-    version: 0.003
+    version: 0.004
   Meerkat::Role::Document:
     file: lib/Meerkat/Role/Document.pm
-    version: 0.003
+    version: 0.004
   Meerkat::Types:
     file: lib/Meerkat/Types.pm
-    version: 0.003
+    version: 0.004
 requires:
   Carp: 0
   DateTime: 0
@@ -85,5 +86,5 @@ resources:
   bugtracker: https://github.com/dagolden/Meerkat/issues
   homepage: https://github.com/dagolden/Meerkat
   repository: https://github.com/dagolden/Meerkat.git
-version: 0.003
+version: 0.004
 x_authority: cpan:DAGOLDEN

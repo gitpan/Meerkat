@@ -4,7 +4,7 @@ use warnings;
 
 use 5.010000;
 
-use ExtUtils::MakeMaker 6.30;
+use ExtUtils::MakeMaker 6.17;
 
 
 
@@ -13,7 +13,7 @@ my %WriteMakefileArgs = (
   "AUTHOR" => "David Golden <dagolden\@cpan.org>",
   "BUILD_REQUIRES" => {},
   "CONFIGURE_REQUIRES" => {
-    "ExtUtils::MakeMaker" => "6.30"
+    "ExtUtils::MakeMaker" => "6.17"
   },
   "DISTNAME" => "Meerkat",
   "EXE_FILES" => [],
@@ -47,6 +47,7 @@ my %WriteMakefileArgs = (
     "Data::Faker" => 0,
     "DateTime::Tiny" => 0,
     "ExtUtils::MakeMaker" => 0,
+    "File::Spec" => 0,
     "File::Spec::Functions" => 0,
     "File::Temp" => 0,
     "IO::Handle" => 0,
@@ -63,7 +64,7 @@ my %WriteMakefileArgs = (
     "Time::HiRes" => 0,
     "lib" => 0
   },
-  "VERSION" => "0.003",
+  "VERSION" => "0.004",
   "test" => {
     "TESTS" => "t/*.t"
   }
