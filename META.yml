@@ -3,15 +3,10 @@ abstract: 'Manage MongoDB documents as Moose objects'
 author:
   - 'David Golden <dagolden@cpan.org>'
 build_requires:
-  DDP: 0
   Data::Faker: 0
   DateTime::Tiny: 0
   ExtUtils::MakeMaker: 0
-  File::Spec: 0
   File::Spec::Functions: 0
-  File::Temp: 0
-  IO::Handle: 0
-  IPC::Open3: 0
   List::Util: 0
   MooX::Types::MooseLike::Base: 0
   Test::Deep: 0
@@ -26,7 +21,7 @@ build_requires:
 configure_requires:
   ExtUtils::MakeMaker: 6.17
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 4.300039, CPAN::Meta::Converter version 2.120921'
+generated_by: 'Dist::Zilla version 4.300039, CPAN::Meta::Converter version 2.132830'
 license: apache
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -43,22 +38,22 @@ no_index:
 provides:
   Meerkat:
     file: lib/Meerkat.pm
-    version: 0.004
+    version: 0.005
   Meerkat::Collection:
     file: lib/Meerkat/Collection.pm
-    version: 0.004
+    version: 0.005
   Meerkat::Cursor:
     file: lib/Meerkat/Cursor.pm
-    version: 0.004
+    version: 0.005
   Meerkat::DateTime:
     file: lib/Meerkat/DateTime.pm
-    version: 0.004
+    version: 0.005
   Meerkat::Role::Document:
     file: lib/Meerkat/Role/Document.pm
-    version: 0.004
+    version: 0.005
   Meerkat::Types:
     file: lib/Meerkat/Types.pm
-    version: 0.004
+    version: 0.005
 requires:
   Carp: 0
   DateTime: 0
@@ -68,7 +63,7 @@ requires:
   Moose: 2
   Moose::Role: 2
   MooseX::AttributeShortcuts: 0
-  MooseX::Role::MongoDB: 0
+  MooseX::Role::MongoDB: 0.002
   MooseX::Storage: 0
   MooseX::Storage::Engine: 0
   MooseX::Types: 0
@@ -86,5 +81,5 @@ resources:
   bugtracker: https://github.com/dagolden/Meerkat/issues
   homepage: https://github.com/dagolden/Meerkat
   repository: https://github.com/dagolden/Meerkat.git
-version: 0.004
+version: 0.005
 x_authority: cpan:DAGOLDEN

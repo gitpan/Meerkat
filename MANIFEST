@@ -17,7 +17,6 @@ lib/Meerkat/Role/Document.pm
 lib/Meerkat/Tutorial.pod
 lib/Meerkat/Types.pm
 perlcritic.rc
-t/00-compile.t
 t/00-report-prereqs.t
 t/basic.t
 t/custom_collection.t
@@ -29,6 +28,7 @@ t/lib/My/Model/Person.pm
 t/lib/TestFixtures.pm
 t/update.t
 tidyall.ini
+xt/author/00-compile.t
 xt/author/critic.t
 xt/author/pod-spell.t
 xt/release/distmeta.t

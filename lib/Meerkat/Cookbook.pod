@@ -13,7 +13,7 @@ Meerkat::Cookbook - Meerkat recipes with dos and don'ts
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 COOKBOOK
 
