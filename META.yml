@@ -38,22 +38,22 @@ no_index:
 provides:
   Meerkat:
     file: lib/Meerkat.pm
-    version: 0.005
+    version: 0.006
   Meerkat::Collection:
     file: lib/Meerkat/Collection.pm
-    version: 0.005
+    version: 0.006
   Meerkat::Cursor:
     file: lib/Meerkat/Cursor.pm
-    version: 0.005
+    version: 0.006
   Meerkat::DateTime:
     file: lib/Meerkat/DateTime.pm
-    version: 0.005
+    version: 0.006
   Meerkat::Role::Document:
     file: lib/Meerkat/Role/Document.pm
-    version: 0.005
+    version: 0.006
   Meerkat::Types:
     file: lib/Meerkat/Types.pm
-    version: 0.005
+    version: 0.006
 requires:
   Carp: 0
   DateTime: 0
@@ -63,6 +63,7 @@ requires:
   Moose: 2
   Moose::Role: 2
   MooseX::AttributeShortcuts: 0
+  MooseX::Role::Logger: 0
   MooseX::Role::MongoDB: 0.002
   MooseX::Storage: 0
   MooseX::Storage::Engine: 0
@@ -81,5 +82,5 @@ resources:
   bugtracker: https://github.com/dagolden/Meerkat/issues
   homepage: https://github.com/dagolden/Meerkat
   repository: https://github.com/dagolden/Meerkat.git
-version: 0.005
+version: 0.006
 x_authority: cpan:DAGOLDEN

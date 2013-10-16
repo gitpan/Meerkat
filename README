@@ -2,7 +2,7 @@ NAME
     Meerkat - Manage MongoDB documents as Moose objects
 
 VERSION
-    version 0.005
+    version 0.006
 
 SYNOPSIS
         use Meerkat;
@@ -53,7 +53,6 @@ DESCRIPTION
     reconnect from child processes.
 
 USAGE
-  
     Meerkat divides functional responsibilities across six classes:
 
     *   Meerkat — associates a Perl namespace to a MongoDB connection and

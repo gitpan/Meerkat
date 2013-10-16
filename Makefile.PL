@@ -28,6 +28,7 @@ my %WriteMakefileArgs = (
     "Moose" => 2,
     "Moose::Role" => 2,
     "MooseX::AttributeShortcuts" => 0,
+    "MooseX::Role::Logger" => 0,
     "MooseX::Role::MongoDB" => "0.002",
     "MooseX::Storage" => 0,
     "MooseX::Storage::Engine" => 0,
@@ -59,7 +60,7 @@ my %WriteMakefileArgs = (
     "Time::HiRes" => 0,
     "lib" => 0
   },
-  "VERSION" => "0.005",
+  "VERSION" => "0.006",
   "test" => {
     "TESTS" => "t/*.t"
   }

@@ -26,9 +26,9 @@ lib
 Meerkat
 DateTime
 Cookbook
-Collection
-Tutorial
-Types
 Cursor
+Types
+Collection
 Role
 Document
+Tutorial

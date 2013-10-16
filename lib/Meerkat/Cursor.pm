@@ -4,7 +4,7 @@ use warnings;
 
 package Meerkat::Cursor;
 # ABSTRACT: Wrap MongoDB::Cursor to inflate data to objects
-our $VERSION = '0.005'; # VERSION
+our $VERSION = '0.006'; # VERSION
 
 # Dependencies
 use Moose 2;
@@ -56,7 +56,7 @@ Meerkat::Cursor - Wrap MongoDB::Cursor to inflate data to objects
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 SYNOPSIS
 

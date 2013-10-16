@@ -4,7 +4,7 @@ use warnings;
 
 package Meerkat;
 # ABSTRACT: Manage MongoDB documents as Moose objects
-our $VERSION = '0.005'; # VERSION
+our $VERSION = '0.006'; # VERSION
 
 # Dependencies
 use Moose 2;
@@ -19,7 +19,7 @@ use Types::Standard qw/:types/;
 
 use namespace::autoclean;
 
-with 'MooseX::Role::MongoDB' => { -version => 0.002 };
+with 'MooseX::Role::Logger', 'MooseX::Role::MongoDB' => { -version => 0.002 };
 
 
 has model_namespace => (
@@ -100,7 +100,7 @@ Meerkat - Manage MongoDB documents as Moose objects
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 SYNOPSIS
 
@@ -153,8 +153,6 @@ gets cleared when a fork occurs.  Meerkat will transparently reconnect from
 child processes.
 
 =head1 USAGE
-
-=head2
 
 Meerkat divides functional responsibilities across six classes:
 
