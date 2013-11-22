@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-# this test was generated with Dist::Zilla::Plugin::Test::Compile 2.036
+# this test was generated with Dist::Zilla::Plugin::Test::Compile 2.037
 
 use Test::More  tests => 6 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
@@ -23,7 +23,7 @@ use File::Temp;
 local $ENV{HOME} = File::Temp::tempdir( CLEANUP => 1 );
 
 
-my $inc_switch = q[-Ilib];
+my $inc_switch = -d 'blib' ? '-Mblib' : '-Ilib';
 
 use File::Spec;
 use IPC::Open3;

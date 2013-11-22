@@ -4,7 +4,7 @@ use warnings;
 
 package Meerkat;
 # ABSTRACT: Manage MongoDB documents as Moose objects
-our $VERSION = '0.006'; # VERSION
+our $VERSION = '0.007'; # VERSION
 
 # Dependencies
 use Moose 2;
@@ -19,7 +19,7 @@ use Types::Standard qw/:types/;
 
 use namespace::autoclean;
 
-with 'MooseX::Role::Logger', 'MooseX::Role::MongoDB' => { -version => 0.002 };
+with 'MooseX::Role::Logger', 'MooseX::Role::MongoDB' => { -version => 0.005 };
 
 
 has model_namespace => (
@@ -92,7 +92,7 @@ __END__
 
 =pod
 
-=encoding utf-8
+=encoding UTF-8
 
 =head1 NAME
 
@@ -100,7 +100,7 @@ Meerkat - Manage MongoDB documents as Moose objects
 
 =head1 VERSION
 
-version 0.006
+version 0.007
 
 =head1 SYNOPSIS
 

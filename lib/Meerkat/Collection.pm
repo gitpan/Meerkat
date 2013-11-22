@@ -4,7 +4,7 @@ use warnings;
 
 package Meerkat::Collection;
 # ABSTRACT: Associate a class, database and MongoDB collection
-our $VERSION = '0.006'; # VERSION
+our $VERSION = '0.007'; # VERSION
 
 use Moose 2;
 use MooseX::AttributeShortcuts;
@@ -12,7 +12,7 @@ use MooseX::AttributeShortcuts;
 use Carp qw/croak/;
 use Meerkat::Cursor;
 use Module::Runtime qw/require_module/;
-use Try::Tiny;
+use Try::Tiny::Retry 0.002 qw/:all/;
 use Type::Params qw/compile/;
 use Types::Standard qw/slurpy :types/;
 
@@ -83,7 +83,7 @@ sub create {
 sub count {
     state $check = compile( Object, Optional [HashRef] );
     my ( $self, $query ) = $check->(@_);
-    return $self->_mongo_collection->count($query);
+    return $self->_try_mongo_op( sub { $self->_mongo_collection->count($query) } );
 }
 
 
@@ -91,7 +91,10 @@ sub find_id {
     state $check = compile( Object, Defined );
     my ( $self, $id ) = $check->(@_);
     $id = ref($id) eq 'MongoDB::OID' ? $id : MongoDB::OID->new($id);
-    return unless my $data = $self->_mongo_collection->find_one( { _id => $id } );
+    my $data =
+      $self->_try_mongo_op( sub { $self->_mongo_collection->find_one( { _id => $id } ) }
+      );
+    return unless $data;
     return $self->thaw_object($data);
 }
 
@@ -99,7 +102,9 @@ sub find_id {
 sub find_one {
     state $check = compile( Object, HashRef );
     my ( $self, $query ) = $check->(@_);
-    return unless my $data = $self->_mongo_collection->find_one($query);
+    return
+      unless my $data =
+      $self->_try_mongo_op( sub { $self->_mongo_collection->find_one($query) } );
     return $self->thaw_object($data);
 }
 
@@ -107,7 +112,7 @@ sub find_one {
 sub find {
     state $check = compile( Object, Optional [HashRef] );
     my ( $self, $query ) = $check->(@_);
-    my $cursor = $self->_mongo_collection->find($query);
+    my $cursor = $self->_try_mongo_op( sub { $self->_mongo_collection->find($query) } );
     return Meerkat::Cursor->new( cursor => $cursor, collection => $self );
 }
 
@@ -120,7 +125,8 @@ sub ensure_indexes {
     for my $index (@$aoa) {
         my @copy = @$index;
         my $options = ref $copy[0] eq 'HASH' ? shift @copy : {};
-        $self->_mongo_collection->ensure_index( \@copy, $options );
+        $self->_try_mongo_op(
+            sub { $self->_mongo_collection->ensure_index( \@copy, $options ) } );
     }
     return 1;
 }
@@ -133,7 +139,8 @@ sub ensure_indexes {
 sub remove {
     state $check = compile( Object, Object );
     my ( $self, $obj ) = $check->(@_);
-    $self->_mongo_collection->remove( { _id => $obj->_id } );
+    $self->_try_mongo_op(
+        sub { $self->_mongo_collection->remove( { _id => $obj->_id } ) } );
     $obj->_set_removed(1);
     return 1;
 }
@@ -149,7 +156,9 @@ sub reinsert {
 sub sync {
     state $check = compile( Object, Object );
     my ( $self, $obj ) = $check->(@_);
-    if ( my $data = $self->_mongo_collection->find_one( { _id => $obj->_id } ) ) {
+    my $data = $self->_try_mongo_op(
+        sub { $self->_mongo_collection->find_one( { _id => $obj->_id } ) } );
+    if ($data) {
         $self->_sync( $data => $obj );
         $obj->_set_removed(0);
         return 1;
@@ -163,18 +172,20 @@ sub sync {
 sub update {
     state $check = compile( Object, Object, HashRef );
     my ( $self, $obj, $update ) = $check->(@_);
-    my $data = try {
-        $self->_mongo_collection->find_and_modify(
-            {
-                query  => { _id => $obj->_id },
-                update => $update,
-                new    => 1,
-            }
-        );
-    }
-    catch {
-        $self->_croak("Update failed: $_");
-    };
+    my $data = $self->_try_mongo_op(
+        sub {
+            $self->_mongo_collection->find_and_modify(
+                {
+                    query  => { _id => $obj->_id },
+                    update => $update,
+                    new    => 1,
+                }
+            );
+        },
+        catch {
+            $self->_croak("Update failed: $_");
+        }
+    );
 
     if ( ref $data ) {
         $self->_sync( $data => $obj );
@@ -204,12 +215,24 @@ sub _mongo_collection {
     return $self->meerkat->mongo_collection( $self->collection_name );
 }
 
+sub _try_mongo_op {
+    state $check = compile( Object, CodeRef, slurpy ArrayRef );
+    my ( $self, $code, $rest ) = $check->(@_);
+    # call &retry to bypass prototype
+    return &retry(
+        $code, @$rest,
+        retry_if { /not connected/ },
+        delay_exp { 5, 1e6 },
+        on_retry { $self->mongo_clear_caches }
+    );
+}
+
 sub _save {
     state $check = compile( Object, Object );
     my ( $self, $obj ) = $check->(@_);
     my $pack = $obj->pack;
     delete $pack->{$_} for qw/__CLASS__ _collection _removed/;
-    return !!$self->_mongo_collection->save($pack);
+    return $self->_try_mongo_op( sub { !!$self->_mongo_collection->save($pack) } );
 }
 
 sub _sync {
@@ -246,7 +269,7 @@ __END__
 
 =pod
 
-=encoding utf-8
+=encoding UTF-8
 
 =head1 NAME
 
@@ -254,7 +277,7 @@ Meerkat::Collection - Associate a class, database and MongoDB collection
 
 =head1 VERSION
 
-version 0.006
+version 0.007
 
 =head1 SYNOPSIS
 

@@ -4,10 +4,11 @@ use warnings;
 
 package Meerkat::Cursor;
 # ABSTRACT: Wrap MongoDB::Cursor to inflate data to objects
-our $VERSION = '0.006'; # VERSION
+our $VERSION = '0.007'; # VERSION
 
 # Dependencies
 use Moose 2;
+use Try::Tiny::Retry 0.002 qw/:all/;
 
 
 has cursor => (
@@ -31,7 +32,13 @@ around 'next' => sub {
     my $orig = shift;
     my $self = shift;
 
-    if ( my $data = $self->$orig ) {
+    my $data =
+      retry { $self->$orig },
+      retry_if { /not connected/ },
+      delay_exp { 5, 1e6 },
+      on_retry { $self->mongo_clear_caches };
+
+    if ($data) {
         return $self->collection->thaw_object($data);
     }
     else {
@@ -48,7 +55,7 @@ __END__
 
 =pod
 
-=encoding utf-8
+=encoding UTF-8
 
 =head1 NAME
 
@@ -56,7 +63,7 @@ Meerkat::Cursor - Wrap MongoDB::Cursor to inflate data to objects
 
 =head1 VERSION
 
-version 0.006
+version 0.007
 
 =head1 SYNOPSIS
 

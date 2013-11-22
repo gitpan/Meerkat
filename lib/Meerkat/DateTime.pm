@@ -4,7 +4,7 @@ use warnings;
 
 package Meerkat::DateTime;
 # ABSTRACT: DateTime proxy for lazy inflation from an epoch value
-our $VERSION = '0.006'; # VERSION
+our $VERSION = '0.007'; # VERSION
 
 use Moose 2;
 use MooseX::AttributeShortcuts;
@@ -45,7 +45,7 @@ __END__
 
 =pod
 
-=encoding utf-8
+=encoding UTF-8
 
 =head1 NAME
 
@@ -53,7 +53,7 @@ Meerkat::DateTime - DateTime proxy for lazy inflation from an epoch value
 
 =head1 VERSION
 
-version 0.006
+version 0.007
 
 =head1 SYNOPSIS
 

@@ -4,7 +4,7 @@
       "David Golden <dagolden@cpan.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 4.300039, CPAN::Meta::Converter version 2.132830",
+   "generated_by" : "Dist::Zilla version 5.006, CPAN::Meta::Converter version 2.132830",
    "license" : [
       "apache_2_0"
    ],
@@ -32,6 +32,8 @@
       },
       "develop" : {
          "requires" : {
+            "Dist::Zilla" : "5.006",
+            "Dist::Zilla::PluginBundle::DAGOLDEN" : "0.056",
             "File::Spec" : "0",
             "File::Temp" : "0",
             "IO::Handle" : "0",
@@ -54,13 +56,14 @@
             "Moose::Role" : "2",
             "MooseX::AttributeShortcuts" : "0",
             "MooseX::Role::Logger" : "0",
-            "MooseX::Role::MongoDB" : "0.002",
+            "MooseX::Role::MongoDB" : "0.005",
             "MooseX::Storage" : "0",
             "MooseX::Storage::Engine" : "0",
             "MooseX::Types" : "0",
             "Scalar::Util" : "0",
             "Syntax::Keyword::Junction" : "0",
             "Try::Tiny" : "0",
+            "Try::Tiny::Retry" : "0.002",
             "Type::Params" : "0",
             "Types::Standard" : "0",
             "aliased" : "0",
@@ -97,27 +100,27 @@
    "provides" : {
       "Meerkat" : {
          "file" : "lib/Meerkat.pm",
-         "version" : "0.006"
+         "version" : "0.007"
       },
       "Meerkat::Collection" : {
          "file" : "lib/Meerkat/Collection.pm",
-         "version" : "0.006"
+         "version" : "0.007"
       },
       "Meerkat::Cursor" : {
          "file" : "lib/Meerkat/Cursor.pm",
-         "version" : "0.006"
+         "version" : "0.007"
       },
       "Meerkat::DateTime" : {
          "file" : "lib/Meerkat/DateTime.pm",
-         "version" : "0.006"
+         "version" : "0.007"
       },
       "Meerkat::Role::Document" : {
          "file" : "lib/Meerkat/Role/Document.pm",
-         "version" : "0.006"
+         "version" : "0.007"
       },
       "Meerkat::Types" : {
          "file" : "lib/Meerkat/Types.pm",
-         "version" : "0.006"
+         "version" : "0.007"
       }
    },
    "release_status" : "stable",
@@ -132,7 +135,7 @@
          "web" : "https://github.com/dagolden/Meerkat"
       }
    },
-   "version" : "0.006",
+   "version" : "0.007",
    "x_authority" : "cpan:DAGOLDEN"
 }
 
