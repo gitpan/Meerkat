@@ -18,10 +18,11 @@ build_requires:
   Test::Roo::Role: 0
   Time::HiRes: 0
   lib: 0
+  version: 0
 configure_requires:
   ExtUtils::MakeMaker: 6.17
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 5.006, CPAN::Meta::Converter version 2.132830'
+generated_by: 'Dist::Zilla version 5.012, CPAN::Meta::Converter version 2.133380'
 license: apache
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -38,22 +39,22 @@ no_index:
 provides:
   Meerkat:
     file: lib/Meerkat.pm
-    version: 0.007
+    version: 0.008
   Meerkat::Collection:
     file: lib/Meerkat/Collection.pm
-    version: 0.007
+    version: 0.008
   Meerkat::Cursor:
     file: lib/Meerkat/Cursor.pm
-    version: 0.007
+    version: 0.008
   Meerkat::DateTime:
     file: lib/Meerkat/DateTime.pm
-    version: 0.007
+    version: 0.008
   Meerkat::Role::Document:
     file: lib/Meerkat/Role/Document.pm
-    version: 0.007
+    version: 0.008
   Meerkat::Types:
     file: lib/Meerkat/Types.pm
-    version: 0.007
+    version: 0.008
 requires:
   Carp: 0
   DateTime: 0
@@ -64,7 +65,7 @@ requires:
   Moose::Role: 2
   MooseX::AttributeShortcuts: 0
   MooseX::Role::Logger: 0
-  MooseX::Role::MongoDB: 0.005
+  MooseX::Role::MongoDB: 0.006
   MooseX::Storage: 0
   MooseX::Storage::Engine: 0
   MooseX::Types: 0
@@ -83,5 +84,5 @@ resources:
   bugtracker: https://github.com/dagolden/Meerkat/issues
   homepage: https://github.com/dagolden/Meerkat
   repository: https://github.com/dagolden/Meerkat.git
-version: 0.007
+version: 0.008
 x_authority: cpan:DAGOLDEN

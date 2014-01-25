@@ -2,7 +2,7 @@ NAME
     Meerkat - Manage MongoDB documents as Moose objects
 
 VERSION
-    version 0.007
+    version 0.008
 
 SYNOPSIS
         use Meerkat;
@@ -152,6 +152,13 @@ METHODS
     "collection_namespace" attribute has been provided. A single parameter
     is required and is used as the suffix of a class name provided to the
     Meerkat::Collection "class" attribute.
+
+  mongo_collection
+        my $coll = $meerkat->mongo_collection("My_Model_Person");
+
+    Returns a raw MongoDB::Collection object from the associated database.
+    This is used internally by Meerkat::Collection and is not intended for
+    general use.
 
 EXCEPTION HANDLING
     Unless otherwise specified, all methods throw exceptions on error either

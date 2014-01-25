@@ -4,7 +4,7 @@ use warnings;
 
 package Meerkat::DateTime;
 # ABSTRACT: DateTime proxy for lazy inflation from an epoch value
-our $VERSION = '0.007'; # VERSION
+our $VERSION = '0.008'; # VERSION
 
 use Moose 2;
 use MooseX::AttributeShortcuts;
@@ -15,6 +15,11 @@ use namespace::autoclean;
 
 with Storage;
 
+# =attr epoch (required)
+#
+# Floating point epoch seconds
+#
+# =cut
 
 has epoch => (
     is       => 'ro',
@@ -22,6 +27,11 @@ has epoch => (
     required => 1,
 );
 
+# =attr DateTime
+#
+# A lazily-inflated DateTime object.  It will not be serialized by MooseX::Storage.
+#
+# =cut
 
 has DateTime => (
     is     => 'lazy',
@@ -53,7 +63,7 @@ Meerkat::DateTime - DateTime proxy for lazy inflation from an epoch value
 
 =head1 VERSION
 
-version 0.007
+version 0.008
 
 =head1 SYNOPSIS
 

@@ -4,7 +4,7 @@ use warnings;
 
 package Meerkat::Role::Document;
 # ABSTRACT: Enhances a Moose object with Meerkat methods and metadata
-our $VERSION = '0.007'; # VERSION
+our $VERSION = '0.008'; # VERSION
 
 use Moose::Role 2;
 use MooseX::AttributeShortcuts;
@@ -35,6 +35,14 @@ for my $type (qw/MongoDB::OID Meerkat::Collection DateTime DateTime::Tiny/) {
     );
 }
 
+# =method new
+#
+# B<Don't call this directly!>  Create objects through the
+# L<Meerkat::Collection> or they won't be added to the database.
+#
+#     my $obj = $person->create( name => "Joe" );
+#
+# =cut
 
 has _collection => (
     is       => 'ro',
@@ -56,6 +64,29 @@ has _removed => (
     default => 0,
 );
 
+# =method update
+#
+#     $obj->update( { '$set' => { 'name' => "Moe" } } );
+#
+# Executes a MongoDB update command on the associated document and updates the
+# object's attributes.  You must only use MongoDB L<update
+# operators|http://docs.mongodb.org/manual/reference/operator/nav-update/> to
+# modify the document's fields.
+#
+# Returns true if the updates are applied and synchronized.  If the document has
+# been removed, the method returns false and the object is marked as removed;
+# subsequent C<update>, C<sync> or C<remove> calls will do nothing and return
+# false.
+#
+# This command is intended for custom updates with unusual logic or operators.
+# Many typical updates can be accomplished with the C<update_*> methods described
+# below.
+#
+# For all update methods, you can use a MongoDB nested field label to modify
+# values deep into a data structure. For example C<parents.father> refers to
+# C<< $obj->parents->{father} >>.
+#
+# =cut
 
 sub update {
     state $check = compile( Object, HashRef );
@@ -66,6 +97,25 @@ sub update {
     return $self->_collection->update( $self, $update );
 }
 
+# =method update_set
+#
+#     $obj->update_set( name => "Luke Skywalker" );
+#
+# Sets a field to a value.  This is the MongoDB C<$set> operator.
+#
+# The field must be undefined or else the existing value and the new value must
+# be of similar types (e.g. scalar or array or hash).  For the purpose of this
+# check, an object (e.g. a DateTime) is treated (opaquely) as a scalar value.  If
+# the types do not match, an error will be thrown.
+#
+# Note this means that you can't set a defined value to undefined.  To remove a
+# field entirely, see L</update_clear>.  If you need to make other structural
+# changes, do it manually with the L</update> method.
+#
+# Returns true if the update is applied and synchronized.  If the document has
+# been removed, the method returns false and the object is marked as removed.
+#
+# =cut
 
 sub update_set {
     state $check = compile( Object, Defined, Defined );
@@ -79,6 +129,19 @@ sub update_set {
     return $self->update( { '$set' => { "$field" => $value } } );
 }
 
+# =method update_inc
+#
+#     $obj->update_inc( likes => 1 );
+#     $obj->update_inc( likes => -1 );
+#
+# Increments a field by a positive or negative value.  This is the MongoDB
+# C<$inc> operator.  The field must be undefined or a numeric scalar value
+# or an error will be thrown.
+#
+# Returns true if the update is applied and synchronized.  If the document has
+# been removed, the method returns false and the object is marked as removed.
+#
+# =cut
 
 sub update_inc {
     state $check = compile( Object, Defined, Defined );
@@ -90,6 +153,19 @@ sub update_inc {
     return $self->update( { '$inc' => { "$field" => $value } } );
 }
 
+# =method update_push
+#
+#     $obj->update_push( tags => qw/cool hot trendy/ );
+#
+# Pushes values onto an array reference field. This is the MongoDB C<$push>
+# operator.  The field must be undefined or an array reference or an error
+# is thrown.
+#
+# Returns true if the update is applied and synchronized.  If the document has
+# been removed, the method returns false and the object is marked as removed.
+#
+#
+# =cut
 
 sub update_push {
     state $check = compile( Object, Defined, slurpy ArrayRef );
@@ -98,6 +174,18 @@ sub update_push {
     return $self->update( { '$push' => { "$field" => { '$each' => $list } } } );
 }
 
+# =method update_add
+#
+#     $obj->update_add( tags => qw/cool hot trendy/ );
+#
+# Pushes values onto an array reference field, but only if they do not already
+# exist in the array.  This is the MongoDB C<$addToSet> operator.  The field
+# must be undefined or an array reference or an error is thrown.
+#
+# Returns true if the update is applied and synchronized.  If the document has
+# been removed, the method returns false and the object is marked as removed.
+#
+# =cut
 
 sub update_add {
     state $check = compile( Object, Defined, slurpy ArrayRef );
@@ -106,6 +194,18 @@ sub update_add {
     return $self->update( { '$addToSet' => { "$field" => { '$each' => $list } } } );
 }
 
+# =method update_pop
+#
+#     $obj->update_pop( 'tags' );
+#
+# Removes a value from the end of the array.  This is the MongoDB C<$pop>
+# operator with a direction of "1".    The field must be undefined or an array
+# reference or an error is thrown.
+#
+# Returns true if the update is applied and synchronized.  If the document has
+# been removed, the method returns false and the object is marked as removed.
+#
+# =cut
 
 sub update_pop {
     state $check = compile( Object, Defined );
@@ -114,6 +214,19 @@ sub update_pop {
     return $self->update( { '$pop' => { "$field" => 1 } } );
 }
 
+# =method update_shift
+#
+#     $obj->update_shift( 'tags' );
+#
+# Removes a value from the front of the array.  This is the MongoDB C<$pop>
+# operator with a direction of "-1".   The field must be undefined or an array
+# reference or an error is thrown.
+#
+# Returns true if the update is applied and synchronized.  If the document has
+# been removed, the method returns false and the object is marked as removed.
+#
+#
+# =cut
 
 sub update_shift {
     state $check = compile( Object, Defined );
@@ -122,6 +235,19 @@ sub update_shift {
     return $self->update( { '$pop' => { "$field" => -1 } } );
 }
 
+# =method update_remove
+#
+#     $obj->update_remove( tags => qw/cool hot/ );
+#
+# Removes a list of values from the array.  This is the MongoDB C<$pullAll>
+# operator.   The field must be undefined or an array reference or an error is
+# thrown.
+#
+# Returns true if the update is applied and synchronized.  If the document has
+# been removed, the method returns false and the object is marked as removed.
+#
+#
+# =cut
 
 sub update_remove {
     state $check = compile( Object, Defined, slurpy ArrayRef );
@@ -130,6 +256,17 @@ sub update_remove {
     return $self->update( { '$pullAll' => { "$field" => $list } } );
 }
 
+# =method update_clear
+#
+#     $obj->update_clear( 'tags' );
+#
+# Removes a field from a document.  This is the MongoDB C<$unset> operator.
+# Returns true if the update is applied and synchronized.  If the document has
+# been removed, the method returns false and the object is marked as removed.
+#
+# Be sure not to clear any required fields.
+#
+# =cut
 
 sub update_clear {
     state $check = compile( Object, Defined );
@@ -138,6 +275,16 @@ sub update_clear {
     return $self->update( { '$unset' => { "$field" => undef } } );
 }
 
+# =method sync
+#
+#     $obj->sync;
+#
+# Updates object attributes from the database.  Returns true if synced.  If the
+# document has been removed, the method returns false and the object is marked as
+# removed; subsequent C<update>, C<sync> or C<remove> calls will do nothing and
+# return false.
+#
+# =cut
 
 sub sync {
     state $check = compile(Object);
@@ -145,6 +292,22 @@ sub sync {
     return $self->_collection->sync($self);
 }
 
+# =method remove
+#
+#     $obj->remove;
+#
+# Removes the associated document from the database.  The object is marked as
+# removed; subsequent C<update>, C<sync> or C<remove> calls will do nothing and
+# return false.
+#
+# =method is_removed
+#
+#     if ( $obj->is_removed ) { ... }
+#
+# Returns true or false indicating whether the associated document was removed
+# from the database.
+#
+# =cut
 
 sub remove {
     state $check = compile(Object);
@@ -153,6 +316,17 @@ sub remove {
     return $self->_collection->remove($self);
 }
 
+# =method reinsert
+#
+#     $obj->reinsert;
+#     $obj->reinsert( force => 1 );
+#
+# Reinserts a removed document.  If the C<force> option is true, then it will be
+# reinserted even if the document has not been removed, overwriting any existing
+# document in the database.  Returns false if the document is not removed (unless
+# the force option is true).  Returns true if the document has been reinserted.
+#
+# =cut
 
 sub reinsert {
     state $check = compile( Object, slurpy Dict [ force => Optional [Bool] ] );
@@ -165,9 +339,50 @@ sub reinsert {
 # semi private methods
 #--------------------------------------------------------------------------#
 
+# =method _indexes
+#
+#     $class->_indexes;
+#
+# Returns an empty list.  If you want to define indexes for use with the
+# L<ensure_indexes|Meerkat::Collection/ensure_indexes> method of
+# L<Meerkat::Collection>, create your own C<_indexes> method that returns a list
+# of array references.  The array references can have an optional initial hash
+# reference of indexing options, followed by ordered key & value pairs in the
+# usual MongoDB way.
+#
+# You must provide index fields in an array reference because Perl hashes are not
+# ordered and a compound index requires an order.
+#
+# For example:
+#
+#     sub _indexes {
+#         return (
+#             [ { unique => 1 }, name => 1 ],
+#             [ name => 1, zip_code => 1 ]
+#             [ likes => -1 ],
+#             [ location => '2dsphere' ],
+#         );
+#     }
+#
+# See the L<Meerkat::Cookbook> for more information.
+#
+# =cut
 
 sub _indexes { return }
 
+# =method _deep_field
+#
+#     my $value = $obj->_deep_field( "parents.father" ); # hash key
+#     my $value = $obj->_deep_field( "tags.0" );         # array index
+#
+# Retrieves a field deep in the object's data structure using MongoDB's dot
+# notation.  Returns undef if the field does not exist.  Throws an error if the
+# dot notation would do an illegal dereference.
+#
+# This is far less efficient than accessing an attribute and dereferencing
+# directly.  It is used internally for validation of update_* field arguments.
+#
+# =cut
 
 sub _deep_field {
     my ( $self, $field ) = @_;
@@ -234,7 +449,7 @@ Meerkat::Role::Document - Enhances a Moose object with Meerkat methods and metad
 
 =head1 VERSION
 
-version 0.007
+version 0.008
 
 =head1 SYNOPSIS
 

@@ -4,12 +4,17 @@ use warnings;
 
 package Meerkat::Cursor;
 # ABSTRACT: Wrap MongoDB::Cursor to inflate data to objects
-our $VERSION = '0.007'; # VERSION
+our $VERSION = '0.008'; # VERSION
 
 # Dependencies
 use Moose 2;
 use Try::Tiny::Retry 0.002 qw/:all/;
 
+# =attr cursor (required)
+#
+# A L<MongoDB::Cursor> object
+#
+# =cut
 
 has cursor => (
     is       => 'ro',
@@ -21,6 +26,11 @@ has cursor => (
     ],
 );
 
+# =attr collection (required)
+#
+# A L<Meerkat::Collection> used for inflating results.
+#
+# =cut
 
 has collection => (
     is       => 'ro',
@@ -63,7 +73,7 @@ Meerkat::Cursor - Wrap MongoDB::Cursor to inflate data to objects
 
 =head1 VERSION
 
-version 0.007
+version 0.008
 
 =head1 SYNOPSIS
 
