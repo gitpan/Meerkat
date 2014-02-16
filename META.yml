@@ -3,30 +3,30 @@ abstract: 'Manage MongoDB documents as Moose objects'
 author:
   - 'David Golden <dagolden@cpan.org>'
 build_requires:
-  Data::Faker: 0
-  DateTime::Tiny: 0
-  ExtUtils::MakeMaker: 0
-  File::Spec::Functions: 0
-  List::Util: 0
-  MooX::Types::MooseLike::Base: 0
-  Test::Deep: 0
-  Test::FailWarnings: 0
-  Test::Fatal: 0
-  Test::More: 0
-  Test::Requires: 0
-  Test::Roo: 0
-  Test::Roo::Role: 0
-  Time::HiRes: 0
-  lib: 0
-  version: 0
+  Data::Faker: '0'
+  DateTime::Tiny: '0'
+  ExtUtils::MakeMaker: '0'
+  File::Spec::Functions: '0'
+  List::Util: '0'
+  MooX::Types::MooseLike::Base: '0'
+  Test::Deep: '0'
+  Test::FailWarnings: '0'
+  Test::Fatal: '0'
+  Test::More: '0'
+  Test::Requires: '0'
+  Test::Roo: '0'
+  Test::Roo::Role: '0'
+  Time::HiRes: '0'
+  lib: '0'
+  version: '0'
 configure_requires:
-  ExtUtils::MakeMaker: 6.17
+  ExtUtils::MakeMaker: '6.17'
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 5.012, CPAN::Meta::Converter version 2.133380'
+generated_by: 'Dist::Zilla version 5.013, CPAN::Meta::Converter version 2.133380'
 license: apache
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
-  version: 1.4
+  version: '1.4'
 name: Meerkat
 no_index:
   directory:
@@ -39,50 +39,50 @@ no_index:
 provides:
   Meerkat:
     file: lib/Meerkat.pm
-    version: 0.008
+    version: '0.009'
   Meerkat::Collection:
     file: lib/Meerkat/Collection.pm
-    version: 0.008
+    version: '0.009'
   Meerkat::Cursor:
     file: lib/Meerkat/Cursor.pm
-    version: 0.008
+    version: '0.009'
   Meerkat::DateTime:
     file: lib/Meerkat/DateTime.pm
-    version: 0.008
+    version: '0.009'
   Meerkat::Role::Document:
     file: lib/Meerkat/Role/Document.pm
-    version: 0.008
+    version: '0.009'
   Meerkat::Types:
     file: lib/Meerkat/Types.pm
-    version: 0.008
+    version: '0.009'
 requires:
-  Carp: 0
-  DateTime: 0
-  Module::Runtime: 0
-  MongoDB: 0
-  MongoDB::OID: 0
-  Moose: 2
-  Moose::Role: 2
-  MooseX::AttributeShortcuts: 0
-  MooseX::Role::Logger: 0
-  MooseX::Role::MongoDB: 0.006
-  MooseX::Storage: 0
-  MooseX::Storage::Engine: 0
-  MooseX::Types: 0
-  Scalar::Util: 0
-  Syntax::Keyword::Junction: 0
-  Try::Tiny: 0
-  Try::Tiny::Retry: 0.002
-  Type::Params: 0
-  Types::Standard: 0
-  aliased: 0
-  namespace::autoclean: 0
+  Carp: '0'
+  DateTime: '0'
+  Module::Runtime: '0'
+  MongoDB: '0'
+  MongoDB::OID: '0'
+  Moose: '2'
+  Moose::Role: '2'
+  MooseX::AttributeShortcuts: '0'
+  MooseX::Role::Logger: '0'
+  MooseX::Role::MongoDB: '0.006'
+  MooseX::Storage: '0'
+  MooseX::Storage::Engine: '0'
+  MooseX::Types: '0'
+  Scalar::Util: '0'
+  Syntax::Keyword::Junction: '0'
+  Try::Tiny: '0'
+  Try::Tiny::Retry: '0.002'
+  Type::Params: '0'
+  Types::Standard: '0'
+  aliased: '0'
+  namespace::autoclean: '0'
   perl: v5.10.0
-  strict: 0
-  warnings: 0
+  strict: '0'
+  warnings: '0'
 resources:
   bugtracker: https://github.com/dagolden/Meerkat/issues
   homepage: https://github.com/dagolden/Meerkat
   repository: https://github.com/dagolden/Meerkat.git
-version: 0.008
+version: '0.009'
 x_authority: cpan:DAGOLDEN

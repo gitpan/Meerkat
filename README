@@ -2,7 +2,7 @@ NAME
     Meerkat - Manage MongoDB documents as Moose objects
 
 VERSION
-    version 0.008
+    version 0.009
 
 SYNOPSIS
         use Meerkat;

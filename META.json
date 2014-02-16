@@ -4,7 +4,7 @@
       "David Golden <dagolden@cpan.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 5.012, CPAN::Meta::Converter version 2.133380",
+   "generated_by" : "Dist::Zilla version 5.013, CPAN::Meta::Converter version 2.133380",
    "license" : [
       "apache_2_0"
    ],
@@ -32,7 +32,7 @@
       },
       "develop" : {
          "requires" : {
-            "Dist::Zilla" : "5.012",
+            "Dist::Zilla" : "5.013",
             "Dist::Zilla::PluginBundle::DAGOLDEN" : "0.056",
             "File::Spec" : "0",
             "File::Temp" : "0",
@@ -101,27 +101,27 @@
    "provides" : {
       "Meerkat" : {
          "file" : "lib/Meerkat.pm",
-         "version" : "0.008"
+         "version" : "0.009"
       },
       "Meerkat::Collection" : {
          "file" : "lib/Meerkat/Collection.pm",
-         "version" : "0.008"
+         "version" : "0.009"
       },
       "Meerkat::Cursor" : {
          "file" : "lib/Meerkat/Cursor.pm",
-         "version" : "0.008"
+         "version" : "0.009"
       },
       "Meerkat::DateTime" : {
          "file" : "lib/Meerkat/DateTime.pm",
-         "version" : "0.008"
+         "version" : "0.009"
       },
       "Meerkat::Role::Document" : {
          "file" : "lib/Meerkat/Role/Document.pm",
-         "version" : "0.008"
+         "version" : "0.009"
       },
       "Meerkat::Types" : {
          "file" : "lib/Meerkat/Types.pm",
-         "version" : "0.008"
+         "version" : "0.009"
       }
    },
    "release_status" : "stable",
@@ -136,7 +136,7 @@
          "web" : "https://github.com/dagolden/Meerkat"
       }
    },
-   "version" : "0.008",
+   "version" : "0.009",
    "x_authority" : "cpan:DAGOLDEN"
 }
 
