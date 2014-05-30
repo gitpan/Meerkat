@@ -4,7 +4,7 @@ use Test::Roo;
 use Test::FailWarnings;
 use Test::Deep '!blessed';
 use Test::Fatal;
-use Test::Requires qw/MongoDB::MongoClient/;
+use Test::Requires qw/MongoDB/;
 
 my $conn = eval { MongoDB::MongoClient->new; };
 plan skip_all => "No MongoDB on localhost" unless $conn;
@@ -133,6 +133,22 @@ test 'update_clear works on undef, scalar, ARRAY or HASH' => sub {
         # parents is hash
         $self->pass_update( $op => $obj, 'parents' );
     }
+};
+
+test 'exception on bad index args' => sub {
+    my $self = shift;
+
+    my $meerkat = Meerkat->new(
+        model_namespace => "Bad::Model",
+        database_name   => "test$$",
+    );
+    my $person = $meerkat->collection("Person");
+
+    like(
+        exception { $person->ensure_indexes },
+        qr{_indexes must provide a list of key/value pairs},
+        "bad _index format threw error"
+    );
 };
 
 run_me;

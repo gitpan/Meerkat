@@ -4,7 +4,7 @@ use warnings;
 
 package Meerkat::Collection;
 # ABSTRACT: Associate a class, database and MongoDB collection
-our $VERSION = '0.009'; # VERSION
+our $VERSION = '0.010'; # VERSION
 
 use Moose 2;
 use MooseX::AttributeShortcuts;
@@ -12,6 +12,7 @@ use MooseX::AttributeShortcuts;
 use Carp qw/croak/;
 use Meerkat::Cursor;
 use Module::Runtime qw/require_module/;
+use Tie::IxHash;
 use Try::Tiny::Retry 0.002 qw/:all/;
 use Type::Params qw/compile/;
 use Types::Standard qw/slurpy :types/;
@@ -24,12 +25,12 @@ our @CARP_NOT = qw/Meerkat::Role::Document Try::Tiny/;
 # Public attributes
 #--------------------------------------------------------------------------#
 
-# =attr meerkat (required)
-#
-# The Meerkat object that constructed the object.  It holds the MongoDB
-# collections used to access the database.
-#
-# =cut
+#pod =attr meerkat (required)
+#pod
+#pod The Meerkat object that constructed the object.  It holds the MongoDB
+#pod collections used to access the database.
+#pod
+#pod =cut
 
 has meerkat => (
     is       => 'ro',
@@ -37,12 +38,12 @@ has meerkat => (
     required => 1,
 );
 
-# =attr class (required)
-#
-# The class name to associate with documents.  The class is loaded
-# for you if needed.
-#
-# =cut
+#pod =attr class (required)
+#pod
+#pod The class name to associate with documents.  The class is loaded
+#pod for you if needed.
+#pod
+#pod =cut
 
 has class => (
     is       => 'ro',
@@ -50,12 +51,12 @@ has class => (
     required => 1,
 );
 
-# =attr collection_name
-#
-# The collection name to associate with the class.  Defaults to the
-# name of the class with "::" replaced with "_".
-#
-# =cut
+#pod =attr collection_name
+#pod
+#pod The collection name to associate with the class.  Defaults to the
+#pod name of the class with "::" replaced with "_".
+#pod
+#pod =cut
 
 has collection_name => (
     is  => 'lazy',
@@ -87,18 +88,18 @@ sub BUILD {
 # Public methods on collection as a whole
 #--------------------------------------------------------------------------#
 
-# =method create
-#
-#     my $obj = $person->create( name => 'John' );
-#
-# Creates an object of the class associated with the Meerkat::Collection and
-# inserts it into the associated collection in the database.  Returns the object on
-# success or throws an error on failure.
-#
-# Any arguments given are passed directly to the associated class constructor.
-# Arguments may be given either as a list or as a hash reference.
-#
-# =cut
+#pod =method create
+#pod
+#pod     my $obj = $person->create( name => 'John' );
+#pod
+#pod Creates an object of the class associated with the Meerkat::Collection and
+#pod inserts it into the associated collection in the database.  Returns the object on
+#pod success or throws an error on failure.
+#pod
+#pod Any arguments given are passed directly to the associated class constructor.
+#pod Arguments may be given either as a list or as a hash reference.
+#pod
+#pod =cut
 
 sub create {
     state $check = compile( Object, slurpy ArrayRef );
@@ -109,16 +110,16 @@ sub create {
     return $obj;
 }
 
-# =method count
-#
-#     my $count = $person->count;
-#     my $count = $person->count( $query );
-#
-# Returns the number of documents in the associated collection or throws an error on
-# failure.  If a hash reference is provided, it is passed as a query parameter to
-# the MongoDB L<count|MongoDB::Collection/count> method.
-#
-# =cut
+#pod =method count
+#pod
+#pod     my $count = $person->count;
+#pod     my $count = $person->count( $query );
+#pod
+#pod Returns the number of documents in the associated collection or throws an error on
+#pod failure.  If a hash reference is provided, it is passed as a query parameter to
+#pod the MongoDB L<count|MongoDB::Collection/count> method.
+#pod
+#pod =cut
 
 sub count {
     state $check = compile( Object, Optional [HashRef] );
@@ -127,20 +128,20 @@ sub count {
     );
 }
 
-# =method find_id
-#
-#     my $obj = $person->find_id( $id );
-#
-# Finds a document with the given C<_id> and returns it as an object of the
-# associated class.  Returns undef if the C<_id> is not found or throws an error
-# if one occurs.  This is a shorthand for the same query via C<find_one>:
-#
-#     $person->find_one( { _id => $id } );
-#
-# However, C<find_id> can take either a scalar C<_id> or a L<MongoDB::OID> object
-# as an argument.
-#
-# =cut
+#pod =method find_id
+#pod
+#pod     my $obj = $person->find_id( $id );
+#pod
+#pod Finds a document with the given C<_id> and returns it as an object of the
+#pod associated class.  Returns undef if the C<_id> is not found or throws an error
+#pod if one occurs.  This is a shorthand for the same query via C<find_one>:
+#pod
+#pod     $person->find_one( { _id => $id } );
+#pod
+#pod However, C<find_id> can take either a scalar C<_id> or a L<MongoDB::OID> object
+#pod as an argument.
+#pod
+#pod =cut
 
 sub find_id {
     state $check = compile( Object, Defined );
@@ -153,15 +154,15 @@ sub find_id {
     return $self->thaw_object($data);
 }
 
-# =method find_one
-#
-#     my $obj = $person->find_one( { name => "Larry Wall" } );
-#
-# Finds the first document matching a query parameter hash reference and returns
-# it as an object of the associated class.  Returns undef if the C<_id> is not
-# found or throws an error if one occurs.
-#
-# =cut
+#pod =method find_one
+#pod
+#pod     my $obj = $person->find_one( { name => "Larry Wall" } );
+#pod
+#pod Finds the first document matching a query parameter hash reference and returns
+#pod it as an object of the associated class.  Returns undef if the C<_id> is not
+#pod found or throws an error if one occurs.
+#pod
+#pod =cut
 
 sub find_one {
     state $check = compile( Object, HashRef );
@@ -173,18 +174,18 @@ sub find_one {
     return $self->thaw_object($data);
 }
 
-# =method find
-#
-#     my $cursor = $person->find( { tag => "trendy" } );
-#     my @objs   = $cursor->all;
-#
-# Executes a query against C<collection_name>.  It returns a L<Meerkat::Cursor>
-# or throws an error on failure.  If a hash reference is provided, it is passed
-# as a query parameter to the MongoDB L<find|MongoDB::Collection/find> method,
-# otherwise all documents are returned.  Iterating the cursor will return
-# objects of the associated class.
-#
-# =cut
+#pod =method find
+#pod
+#pod     my $cursor = $person->find( { tag => "trendy" } );
+#pod     my @objs   = $cursor->all;
+#pod
+#pod Executes a query against C<collection_name>.  It returns a L<Meerkat::Cursor>
+#pod or throws an error on failure.  If a hash reference is provided, it is passed
+#pod as a query parameter to the MongoDB L<find|MongoDB::Collection/find> method,
+#pod otherwise all documents are returned.  Iterating the cursor will return
+#pod objects of the associated class.
+#pod
+#pod =cut
 
 sub find {
     state $check = compile( Object, Optional [HashRef] );
@@ -194,16 +195,16 @@ sub find {
     return Meerkat::Cursor->new( cursor => $cursor, collection => $self );
 }
 
-# =method ensure_indexes
-#
-#     $person->ensure_indexes;
-#
-# Executes MongoDB's L<ensure_index|MongoDB::Collection/ensure_index> for every
-# index returned by the C<_index> method of the associated class.  Returns true
-# on success or throws an error if one occurs. See L<Meerkat::Role::Document> for
-# more.
-#
-# =cut
+#pod =method ensure_indexes
+#pod
+#pod     $person->ensure_indexes;
+#pod
+#pod Executes MongoDB's L<ensure_index|MongoDB::Collection/ensure_index> for every
+#pod index returned by the C<_index> method of the associated class.  Returns true
+#pod on success or throws an error if one occurs. See L<Meerkat::Role::Document> for
+#pod more.
+#pod
+#pod =cut
 
 sub ensure_indexes {
     state $check = compile(Object);
@@ -213,8 +214,14 @@ sub ensure_indexes {
     for my $index (@$aoa) {
         my @copy = @$index;
         my $options = ref $copy[0] eq 'HASH' ? shift @copy : {};
+        if ( @copy % 2 != 0 ) {
+            $self->_croak(
+                "_indexes must provide a list of key/value pairs, with an optional leading hashref"
+            );
+        }
+        my $spec = Tie::IxHash->new(@copy);
         $self->_try_mongo_op(
-            ensure_indexes => sub { $self->_mongo_collection->ensure_index( \@copy, $options ) }
+            ensure_indexes => sub { $self->_mongo_collection->ensure_index( $spec, $options ) }
         );
     }
     return 1;
@@ -365,7 +372,7 @@ Meerkat::Collection - Associate a class, database and MongoDB collection
 
 =head1 VERSION
 
-version 0.009
+version 0.010
 
 =head1 SYNOPSIS
 

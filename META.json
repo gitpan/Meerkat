@@ -4,7 +4,7 @@
       "David Golden <dagolden@cpan.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 5.013, CPAN::Meta::Converter version 2.133380",
+   "generated_by" : "Dist::Zilla version 5.019, CPAN::Meta::Converter version 2.141170",
    "license" : [
       "apache_2_0"
    ],
@@ -32,8 +32,8 @@
       },
       "develop" : {
          "requires" : {
-            "Dist::Zilla" : "5.013",
-            "Dist::Zilla::PluginBundle::DAGOLDEN" : "0.056",
+            "Dist::Zilla" : "5",
+            "Dist::Zilla::PluginBundle::DAGOLDEN" : "0.060",
             "File::Spec" : "0",
             "File::Temp" : "0",
             "IO::Handle" : "0",
@@ -62,6 +62,7 @@
             "MooseX::Types" : "0",
             "Scalar::Util" : "0",
             "Syntax::Keyword::Junction" : "0",
+            "Tie::IxHash" : "0",
             "Try::Tiny" : "0",
             "Try::Tiny::Retry" : "0.002",
             "Type::Params" : "0",
@@ -101,27 +102,27 @@
    "provides" : {
       "Meerkat" : {
          "file" : "lib/Meerkat.pm",
-         "version" : "0.009"
+         "version" : "0.010"
       },
       "Meerkat::Collection" : {
          "file" : "lib/Meerkat/Collection.pm",
-         "version" : "0.009"
+         "version" : "0.010"
       },
       "Meerkat::Cursor" : {
          "file" : "lib/Meerkat/Cursor.pm",
-         "version" : "0.009"
+         "version" : "0.010"
       },
       "Meerkat::DateTime" : {
          "file" : "lib/Meerkat/DateTime.pm",
-         "version" : "0.009"
+         "version" : "0.010"
       },
       "Meerkat::Role::Document" : {
          "file" : "lib/Meerkat/Role/Document.pm",
-         "version" : "0.009"
+         "version" : "0.010"
       },
       "Meerkat::Types" : {
          "file" : "lib/Meerkat/Types.pm",
-         "version" : "0.009"
+         "version" : "0.010"
       }
    },
    "release_status" : "stable",
@@ -136,7 +137,7 @@
          "web" : "https://github.com/dagolden/Meerkat"
       }
    },
-   "version" : "0.009",
+   "version" : "0.010",
    "x_authority" : "cpan:DAGOLDEN"
 }
 

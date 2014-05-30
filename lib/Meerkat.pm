@@ -4,7 +4,7 @@ use warnings;
 
 package Meerkat;
 # ABSTRACT: Manage MongoDB documents as Moose objects
-our $VERSION = '0.009'; # VERSION
+our $VERSION = '0.010'; # VERSION
 
 # Dependencies
 use Moose 2;
@@ -21,14 +21,14 @@ use namespace::autoclean;
 
 with 'MooseX::Role::Logger', 'MooseX::Role::MongoDB' => { -version => 0.006 };
 
-# =attr model_namespace (required)
-#
-# A perl module namespace that will be prepended to class names requested
-# via the L</collection> method.  If C<model_namespace> is "My::Model", then
-# C<< $meerkat->collection("Baz") >> will load and associate the
-# C<My::Model::Baz> class in the returned collection object.
-#
-# =cut
+#pod =attr model_namespace (required)
+#pod
+#pod A perl module namespace that will be prepended to class names requested
+#pod via the L</collection> method.  If C<model_namespace> is "My::Model", then
+#pod C<< $meerkat->collection("Baz") >> will load and associate the
+#pod C<My::Model::Baz> class in the returned collection object.
+#pod
+#pod =cut
 
 has model_namespace => (
     is       => 'ro',
@@ -36,14 +36,14 @@ has model_namespace => (
     required => 1,
 );
 
-# =attr database_name (required)
-#
-# A MongoDB database name used to store all collections generated via the Meerkat
-# object and its collection factories.  Unless a C<db_name> is provided in the
-# C<client_options> attribute, this database will be the default for
-# authentication.
-#
-# =cut
+#pod =attr database_name (required)
+#pod
+#pod A MongoDB database name used to store all collections generated via the Meerkat
+#pod object and its collection factories.  Unless a C<db_name> is provided in the
+#pod C<client_options> attribute, this database will be the default for
+#pod authentication.
+#pod
+#pod =cut
 
 has database_name => (
     is       => 'ro',
@@ -51,16 +51,16 @@ has database_name => (
     required => 1,
 );
 
-# =attr client_options
-#
-# A hash reference of L<MongoDB::MongoClient> options that will be passed to its
-# C<connect> method.
-#
-# Note: The C<dt_type> will be forced to C<undef> so that the MongoDB client will
-# provide time values as epoch seconds.  See the L<Meerkat::Cookbook> for more on
-# dealing with dates and times.
-#
-# =cut
+#pod =attr client_options
+#pod
+#pod A hash reference of L<MongoDB::MongoClient> options that will be passed to its
+#pod C<connect> method.
+#pod
+#pod Note: The C<dt_type> will be forced to C<undef> so that the MongoDB client will
+#pod provide time values as epoch seconds.  See the L<Meerkat::Cookbook> for more on
+#pod dealing with dates and times.
+#pod
+#pod =cut
 
 has client_options => (
     is      => 'ro',
@@ -68,18 +68,18 @@ has client_options => (
     default => sub { {} },
 );
 
-# =attr collection_namespace
-#
-# A perl module namespace that will be be used to search for custom collection
-# classes.  The C<collection_namespace> will be prepended to class names
-# requested via the L</collection> method.  If C<collection_namespace> is
-# "My::Collection", then C<< $meerkat->collection("Baz") >> will load and use
-# C<My::Collection::Baz> for constructing a collection object.  If
-# C<collection_namespace> is not provided or if no class is found under the
-# namespace (or if it fails to load), then collection objects will be constructed
-# using L<Meerkat::Collection>.
-#
-# =cut
+#pod =attr collection_namespace
+#pod
+#pod A perl module namespace that will be be used to search for custom collection
+#pod classes.  The C<collection_namespace> will be prepended to class names
+#pod requested via the L</collection> method.  If C<collection_namespace> is
+#pod "My::Collection", then C<< $meerkat->collection("Baz") >> will load and use
+#pod C<My::Collection::Baz> for constructing a collection object.  If
+#pod C<collection_namespace> is not provided or if no class is found under the
+#pod namespace (or if it fails to load), then collection objects will be constructed
+#pod using L<Meerkat::Collection>.
+#pod
+#pod =cut
 
 has collection_namespace => (
     is  => 'ro',
@@ -103,31 +103,31 @@ sub _build__mongo_default_database { $_[0]->database_name }
 # Methods
 #--------------------------------------------------------------------------#
 
-# =method new
-#
-#     my $meerkat = Meerkat->new(
-#         model_namespace => "My::Model",
-#         database_name   => "test",
-#         client_options  => {
-#             host => "mongodb://example.net:27017",
-#             username => "willywonka",
-#             password => "ilovechocolate",
-#         },
-#     );
-#
-# Generates and returns a new Meerkat object.  The C<model_namespace> and
-# C<database_name> attributes are required.
-#
-# =method collection
-#
-#     my $person = $meerkat->collection("Person"); # My::Model::Person
-#
-# Returns a L<Meerkat::Collection> factory object or possibly a subclass if a
-# C<collection_namespace> attribute has been provided. A single parameter is
-# required and is used as the suffix of a class name provided to the
-# Meerkat::Collection C<class> attribute.
-#
-# =cut
+#pod =method new
+#pod
+#pod     my $meerkat = Meerkat->new(
+#pod         model_namespace => "My::Model",
+#pod         database_name   => "test",
+#pod         client_options  => {
+#pod             host => "mongodb://example.net:27017",
+#pod             username => "willywonka",
+#pod             password => "ilovechocolate",
+#pod         },
+#pod     );
+#pod
+#pod Generates and returns a new Meerkat object.  The C<model_namespace> and
+#pod C<database_name> attributes are required.
+#pod
+#pod =method collection
+#pod
+#pod     my $person = $meerkat->collection("Person"); # My::Model::Person
+#pod
+#pod Returns a L<Meerkat::Collection> factory object or possibly a subclass if a
+#pod C<collection_namespace> attribute has been provided. A single parameter is
+#pod required and is used as the suffix of a class name provided to the
+#pod Meerkat::Collection C<class> attribute.
+#pod
+#pod =cut
 
 sub collection {
     state $check = compile( Object, Str );
@@ -144,15 +144,15 @@ sub collection {
     return $class->new( class => $model, meerkat => $self );
 }
 
-# =method mongo_collection
-#
-#     my $coll = $meerkat->mongo_collection("My_Model_Person");
-#
-# Returns a raw L<MongoDB::Collection> object from the associated database.
-# This is used internally by L<Meerkat::Collection> and is not intended for
-# general use.
-#
-# =cut
+#pod =method mongo_collection
+#pod
+#pod     my $coll = $meerkat->mongo_collection("My_Model_Person");
+#pod
+#pod Returns a raw L<MongoDB::Collection> object from the associated database.
+#pod This is used internally by L<Meerkat::Collection> and is not intended for
+#pod general use.
+#pod
+#pod =cut
 
 # alias _mongo_collection provided by MooseX::Role::MongoDB
 *mongo_collection = *_mongo_collection;
@@ -176,7 +176,7 @@ Meerkat - Manage MongoDB documents as Moose objects
 
 =head1 VERSION
 
-version 0.009
+version 0.010
 
 =head1 SYNOPSIS
 

@@ -50,8 +50,8 @@ my $static_prereqs = do { my $x = {
                       },
        'develop' => {
                       'requires' => {
-                                      'Dist::Zilla' => '5.013',
-                                      'Dist::Zilla::PluginBundle::DAGOLDEN' => '0.056',
+                                      'Dist::Zilla' => '5',
+                                      'Dist::Zilla::PluginBundle::DAGOLDEN' => '0.060',
                                       'File::Spec' => '0',
                                       'File::Temp' => '0',
                                       'IO::Handle' => '0',
@@ -80,6 +80,7 @@ my $static_prereqs = do { my $x = {
                                       'MooseX::Types' => '0',
                                       'Scalar::Util' => '0',
                                       'Syntax::Keyword::Junction' => '0',
+                                      'Tie::IxHash' => '0',
                                       'Try::Tiny' => '0',
                                       'Try::Tiny::Retry' => '0.002',
                                       'Type::Params' => '0',
